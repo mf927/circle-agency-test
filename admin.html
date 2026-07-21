@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Area contenuti — Circle Agency</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+/* ── stessa palette del sito ─────────────────────────── */
+:root{
+  --bg:#07090a; --bg2:#0b0f11; --surf:#0f1519; --surf2:#131b20;
+  --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.17);
+  --txt:#eaf1f2; --txt2:#93a2a7; --txt3:#5d6d73;
+  --cy:#00bcc4; --cy2:#2ce6ee; --cydim:rgba(0,188,196,.14);
+  --ok:#3ecf8e; --warn:#e0a83c; --err:#e0635a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--txt);
+  font:15px/1.55 -apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,textarea{font:inherit;color:inherit}
+a{color:var(--cy2)}
+
+/* ── header fisso ────────────────────────────────────── */
+header{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;gap:14px;
+  padding:12px 20px;
+  background:rgba(7,9,10,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+header svg{width:26px;height:26px;color:var(--cy);flex:none}
+header h1{font-size:1rem;font-weight:600;letter-spacing:-.02em}
+header h1 small{display:block;font-size:.68rem;font-weight:500;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase}
+.spacer{flex:1}
+.chip{
+  font-size:.72rem;font-weight:600;letter-spacing:.06em;
+  padding:4px 10px;border-radius:100px;
+  border:1px solid var(--line2);color:var(--txt2);white-space:nowrap;
+}
+.chip.dirty{border-color:var(--warn);color:var(--warn)}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:9px 18px;border-radius:100px;border:1px solid transparent;
+  background:var(--cy);color:#00191b;font-weight:600;font-size:.88rem;
+  cursor:pointer;transition:.2s;white-space:nowrap;
+}
+.btn:hover{background:var(--cy2)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--txt);border-color:var(--line2)}
+.btn.ghost:hover{border-color:var(--cy);background:rgba(255,255,255,.04)}
+
+main{max-width:980px;margin:0 auto;padding:26px 20px 90px}
+
+/* ── banner primo accesso / avvisi ───────────────────── */
+.banner{
+  padding:18px 20px;border-radius:12px;margin-bottom:20px;
+  border:1px solid var(--line2);background:var(--surf);
+  font-size:.92rem;color:var(--txt2);
+}
+.banner b{color:var(--txt)}
+.banner.err{border-color:var(--err)}
+.banner ol{margin:10px 0 0 20px;display:grid;gap:6px}
+
+/* ── gruppi ──────────────────────────────────────────── */
+details.group{
+  border:1px solid var(--line);border-radius:12px;
+  background:var(--bg2);margin-bottom:12px;overflow:hidden;
+}
+details.group summary{
+  list-style:none;cursor:pointer;user-select:none;
+  display:flex;align-items:center;gap:10px;
+  padding:15px 18px;font-weight:600;letter-spacing:-.01em;
+}
+details.group summary::-webkit-details-marker{display:none}
+details.group summary::before{
+  content:'';width:8px;height:8px;flex:none;
+  border-right:1.5px solid var(--cy);border-bottom:1.5px solid var(--cy);
+  transform:rotate(-45deg);transition:.25s;
+}
+details.group[open] summary::before{transform:rotate(45deg)}
+.gcount{margin-left:auto;font-size:.72rem;color:var(--txt3);font-weight:500}
+.gcount.on{color:var(--warn)}
+.gbody{padding:4px 18px 18px;display:grid;gap:14px}
+
+/* ── campi ───────────────────────────────────────────── */
+.field label{
+  display:block;font-size:.72rem;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--txt2);
+  margin-bottom:6px;
+}
+.field label .mod{color:var(--warn)}
+.field textarea,.field input[type=text]{
+  width:100%;padding:10px 12px;border-radius:8px;
+  background:var(--surf);border:1px solid var(--line);
+  font-size:.95rem;resize:vertical;min-height:0;
+}
+.field textarea:focus,.field input:focus{outline:none;border-color:var(--cy);box-shadow:0 0 0 3px var(--cydim)}
+.field .hint{font-size:.76rem;color:var(--txt3);margin-top:4px}
+.field .hint code{background:var(--surf2);padding:1px 5px;border-radius:4px;font-size:.72rem}
+
+/* ── immagini ────────────────────────────────────────── */
+.imgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.slot{
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  background:var(--surf);display:flex;flex-direction:column;
+}
+.slot.changed{border-color:var(--warn)}
+.slot .th{position:relative;aspect-ratio:8/5;background:var(--surf2)}
+.slot .th img{width:100%;height:100%;object-fit:cover;display:block}
+.slot .th .tag{
+  position:absolute;left:8px;bottom:8px;
+  font-size:.68rem;font-weight:600;padding:3px 9px;border-radius:100px;
+  background:rgba(7,9,10,.8);border:1px solid var(--line2);color:var(--txt2);
+}
+.slot .sb{padding:12px 14px;display:grid;gap:8px}
+.slot .sb b{font-size:.9rem;letter-spacing:-.01em}
+.slot .sb .meta{font-size:.74rem;color:var(--txt3)}
+.slot .sb input[type=text]{
+  width:100%;padding:7px 10px;border-radius:7px;font-size:.82rem;
+  background:var(--bg);border:1px solid var(--line);
+}
+.slot .sb .row{display:flex;gap:8px;align-items:center}
+.slot .btn{padding:6px 13px;font-size:.8rem}
+
+/* ── modale salvataggio ──────────────────────────────── */
+dialog{
+  border:1px solid var(--line2);border-radius:14px;
+  background:var(--bg2);color:var(--txt);padding:26px;
+  max-width:430px;width:92vw;
+}
+dialog::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(3px)}
+dialog h2{font-size:1.05rem;margin-bottom:14px;letter-spacing:-.02em}
+dialog .steps{display:grid;gap:8px;font-size:.9rem;color:var(--txt2)}
+dialog .steps li{list-style:none;display:flex;gap:9px;align-items:center}
+dialog .steps li::before{content:'○';color:var(--txt3)}
+dialog .steps li.doing::before{content:'◐';color:var(--cy)}
+dialog .steps li.done::before{content:'●';color:var(--ok)}
+dialog .steps li.fail::before{content:'✕';color:var(--err)}
+dialog .out{margin-top:16px;font-size:.86rem}
+dialog .out a{font-weight:600}
+dialog .close{margin-top:18px}
+
+.toast{
+  position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
+  background:var(--surf2);border:1px solid var(--line2);
+  padding:10px 20px;border-radius:100px;font-size:.88rem;
+  opacity:0;pointer-events:none;transition:.3s;z-index:99;
+}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<header>
+  <svg viewBox="0 0 1186.29 1186.18" fill="currentColor" aria-hidden="true">
+    <path d="M 963.69 130.88 C 862.22 49.18 733.56 0 593.09 0 C 265.53 0 0 265.53 0 593.09 C 0 920.66 265.53 1186.18 593.09 1186.18 C 791.48 1186.18 966.65 1088.42 1074.36 938.86 L 899.04 938.86 C 817.48 1011.09 710.6 1055.33 593.09 1055.33 C 337.81 1055.33 130.88 848.38 130.88 593.12 C 130.88 337.86 337.84 130.91 593.09 130.91 Z"/>
+    <path d="M 726.12 150.71 C 790.6 170.24 849.23 203.33 898.52 246.83 L 1073.95 246.83 C 1048.57 211.68 1019.35 179.55 987.11 150.71 L 726.14 150.71 Z"/>
+    <path d="M 989.75 356.67 C 1031.13 425.91 1055.33 506.59 1055.33 593.09 C 1055.33 679.6 1031.22 759.87 990.03 829.02 L 1137.38 829.02 C 1168.8 756.71 1186.29 676.96 1186.29 593.09 C 1186.29 509.03 1168.66 429.12 1137.11 356.67 Z"/>
+  </svg>
+  <h1>Area contenuti<small>Circle Agency — sito di prova</small></h1>
+  <div class="spacer"></div>
+  <span class="chip" id="chip">caricamento…</span>
+  <a class="btn ghost" href="guida.html">Come si usa</a>
+  <a class="btn ghost" href="./" target="_blank" rel="noopener">Vedi il sito</a>
+  <button class="btn ghost" id="tokenBtn">Chiave di accesso</button>
+  <button class="btn" id="saveBtn" disabled>Salva le modifiche</button>
+</header>
+
+<main>
+  <div id="tokenBanner" class="banner" hidden>
+    <b>Prima di poter salvare serve la chiave di accesso.</b><br>
+    È una stringa che inizia con <code>github_pat_…</code>: te la fornisce chi
+    gestisce il sito. Premi «Chiave di accesso» qui sopra e incollala — viene
+    ricordata solo su questo browser. Senza chiave puoi comunque guardare i
+    contenuti, ma non salvare.
+    <br><br>Se è la prima volta, dai un'occhiata a
+    <a href="guida.html">come si usa quest'area</a>: sono due minuti.
+  </div>
+  <div id="loadErr" class="banner err" hidden></div>
+
+  <div id="groups"></div>
+
+  <details class="group" id="imgGroup" open>
+    <summary>Fotografie <span class="gcount" id="imgCount"></span></summary>
+    <div class="gbody">
+      <p style="font-size:.82rem;color:var(--txt3)">
+        Scegli un file e viene ritagliato e ridimensionato da solo alla misura
+        giusta. La foto nuova va online solo dopo «Salva le modifiche».
+      </p>
+      <div class="imgs" id="imgs"></div>
+    </div>
+  </details>
+</main>
+
+<dialog id="saveDlg">
+  <h2>Salvataggio in corso</h2>
+  <ol class="steps">
+    <li id="st1">Preparo i file</li>
+    <li id="st2">Carico sul sito</li>
+    <li id="st3">Registro la modifica</li>
+  </ol>
+  <div class="out" id="saveOut"></div>
+  <button class="btn close" id="dlgClose" hidden>Chiudi</button>
+</dialog>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+/* ═══════════════════════════════════════════════════════
+   Area contenuti Circle Agency.
+   Carica index.html, mostra i testi come campi modificabili
+   e le foto come riquadri sostituibili; al salvataggio fa un
+   commit sul branch `test` del repo privato via API GitHub.
+   Il deploy sul sito di prova parte da solo (~1 minuto).
+   ═══════════════════════════════════════════════════════ */
+const REPO   = 'mf927/circle-agency';
+const BRANCH = 'test';
+const API    = 'https://api.github.com/repos/' + REPO;
+const SITE   = './';
+
+const $ = s => document.querySelector(s);
+const toast = m => { const t=$('#toast'); t.textContent=m; t.classList.add('show');
+                     clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),3500); };
+
+let token = localStorage.getItem('circle-admin-token') || '';
+let doc = null;            // documento index.html parsato
+let loadedFromApi = false; // true se caricato dal branch (col token)
+let loadedSha = null;      // sha del commit di partenza (per rilevare conflitti)
+let fields = [];           // campi testo {el, input, initial, type, chipEl}
+let imgChanges = {};       // file -> {blob, previewUrl}
+let altFields = [];        // alt delle immagini
+
+const gh = (path, opt={}) => fetch(API+path, { ...opt, headers:{
+  'Authorization':'Bearer '+token,
+  'Accept':'application/vnd.github+json',
+  'X-GitHub-Api-Version':'2022-11-28',
+  ...(opt.headers||{}) }});
+
+/* ── caricamento sorgente ────────────────────────────── */
+async function loadSource(){
+  if (token){
+    try{
+      const r = await gh('/git/ref/heads/'+BRANCH);
+      if (r.status===401 || r.status===403) throw new Error('chiave non valida o scaduta');
+      if (!r.ok) throw new Error('errore '+r.status);
+      loadedSha = (await r.json()).object.sha;
+      const f = await gh('/contents/index.html?ref='+BRANCH,
+                         {headers:{'Accept':'application/vnd.github.raw+json'}});
+      if (!f.ok) throw new Error('impossibile leggere index.html ('+f.status+')');
+      loadedFromApi = true;
+      return await f.text();
+    }catch(e){
+      toast('Chiave non funzionante: '+e.message);
+    }
+  }
+  // senza chiave: versione pubblicata (stessa cartella)
+  const r = await fetch('index.html?nocache='+Date.now());
+  if (!r.ok) throw new Error('index.html non trovato ('+r.status+')');
+  return await r.text();
+}
+
+/* ── definizione dei campi ───────────────────────────────
+   type 'plain' = solo testo   type 'rich' = può contenere
+   <em> corsivo, <br> a capo, <b> grassetto                */
+const RICH_HINT = '<code>&lt;em&gt;corsivo&lt;/em&gt;</code> · <code>&lt;br&gt;</code> a capo';
+
+function buildManifest(d){
+  const groups = [];
+  const f = (el, label, type='plain', hint='') => el ? {el, label, type, hint} : null;
+  const q = s => d.querySelector(s);
+  const qa = s => [...d.querySelectorAll(s)];
+  const add = (title, items) => { items = items.filter(Boolean); if(items.length) groups.push({title, items}); };
+
+  add('Prima schermata (hero)', [
+    f(q('.hero__h1'), 'Titolo grande', 'rich', RICH_HINT),
+    f(q('.hero__sub'), 'Sottotitolo'),
+    ...qa('.hero__facts li').flatMap((li,i)=>[
+      f(li.querySelector('b'),   'Dato '+(i+1)+' — numero'),
+      f(li.querySelector('span'),'Dato '+(i+1)+' — etichetta') ]),
+  ]);
+
+  add('Chi siamo', [
+    f(q('.intro .lead'), 'Testo principale', 'rich', RICH_HINT),
+    f(q('.intro .body'), 'Testo secondario'),
+  ]);
+
+  add('Servizi — titolo sezione', [
+    f(q('#servizi .h2'), 'Titolo', 'rich', RICH_HINT),
+    f(q('#servizi .sechead__note'), 'Nota sotto il titolo'),
+    f(q('.bundle h3'), 'Riquadro pacchetti — titolo'),
+    f(q('.bundle > div > p'), 'Riquadro pacchetti — testo'),
+  ]);
+
+  qa('.cards .card').forEach((card,i)=>{
+    const name = card.querySelector('h3')?.textContent.trim() || 'Servizio '+(i+1);
+    add('Servizio '+String(i+1).padStart(2,'0')+' — '+name, [
+      f(card.querySelector('h3'), 'Nome'),
+      f(card.querySelector(':scope > p'), 'Descrizione'),
+      ...[...card.querySelectorAll('.card__list li')].map((li,j)=>
+        f(li, 'Punto '+(j+1))),
+      f(card.querySelector('.card__price'), 'Prezzo', 'rich',
+        'es. <code>da &lt;b&gt;250 €&lt;/b&gt;</code>'),
+    ]);
+  });
+
+  add('Metodo', [
+    f(q('#metodo .h2'), 'Titolo sezione', 'rich', RICH_HINT),
+    ...qa('.steps .step').flatMap((s,i)=>[
+      f(s.querySelector('h3'), 'Fase '+(i+1)+' — titolo'),
+      f(s.querySelector('p'),  'Fase '+(i+1)+' — testo') ]),
+  ]);
+
+  add('Perché Circle', [
+    f(q('.why .h2'), 'Titolo sezione', 'rich', RICH_HINT),
+    ...qa('.why__list > li').flatMap((li,i)=>[
+      f(li.querySelector('h3'), 'Motivo '+(i+1)+' — titolo'),
+      f(li.querySelector('p'),  'Motivo '+(i+1)+' — testo') ]),
+  ]);
+
+  add('Lavori', [
+    f(q('#lavori .h2'), 'Titolo sezione', 'rich', RICH_HINT),
+    f(q('#lavori .sechead__note'), 'Nota sotto il titolo'),
+    ...qa('.gallery .shot figcaption').map((c,i)=>
+      f(c, 'Didascalia foto '+(i+1))),
+  ]);
+
+  add('Domande frequenti', [
+    f(q('#faq .h2'), 'Titolo sezione', 'rich', RICH_HINT),
+    ...qa('.faq details').flatMap((dt,i)=>[
+      f(dt.querySelector('summary'), 'Domanda '+(i+1)),
+      f(dt.querySelector('p'),       'Risposta '+(i+1)) ]),
+  ]);
+
+  add('Contatti', [
+    f(q('#contatti .h2'), 'Titolo sezione', 'rich', RICH_HINT),
+    f(q('.form__note'), 'Nota sotto il modulo'),
+    ...qa('.ccard').flatMap((c,i)=>[
+      f(c.querySelector('.ccard__k'), 'Riquadro '+(i+1)+' — etichetta'),
+      f(c.querySelector('.ccard__v'), 'Riquadro '+(i+1)+' — contenuto', 'rich',
+        'Se cambi email o telefono, segnalalo anche a chi sviluppa: i link dei pulsanti vanno aggiornati a parte.') ]),
+  ]);
+
+  add('Fondo pagina', [
+    f(q('.foot__claim'), 'Sotto il logo', 'rich', RICH_HINT),
+    f(q('.foot__bar p'), 'Riga copyright / P.IVA', 'rich', ''),
+  ]);
+
+  return groups;
+}
+
+/* le 17 foto: nome file → dove appare e misura giusta */
+const SLOTS = [
+  {file:'hero.jpg',                  label:'Sfondo hero',            w:1920,h:1080, alt:false},
+  {file:'agenzia-01.jpg',            label:'Chi siamo',              w:900, h:1100},
+  {file:'agenzia-02.jpg',            label:'Perché Circle',          w:900, h:1100},
+  {file:'servizio-dj.jpg',           label:'Card — DJ',              w:800, h:500},
+  {file:'servizio-hostess.jpg',      label:'Card — Hostess',         w:800, h:500},
+  {file:'servizio-volantinaggio.jpg',label:'Card — Volantinaggio',   w:800, h:500},
+  {file:'servizio-grafica.jpg',      label:'Card — Grafica',         w:800, h:500},
+  {file:'servizio-vele.jpg',         label:'Card — Vele',            w:800, h:500},
+  {file:'servizio-fotografia.jpg',   label:'Card — Fotografia',      w:800, h:500},
+  {file:'servizio-video.jpg',        label:'Card — Video',           w:800, h:500},
+  {file:'servizio-audio-luci.jpg',   label:'Card — Audio & Luci',    w:800, h:500},
+  {file:'servizio-software.jpg',     label:'Card — Software',        w:800, h:500},
+  {file:'lavoro-01.jpg',             label:'Lavori — larga 1',       w:1200,h:800},
+  {file:'lavoro-02.jpg',             label:'Lavori — larga 2',       w:1200,h:800},
+  {file:'lavoro-03.jpg',             label:'Lavori — quadrata 1',    w:800, h:800},
+  {file:'lavoro-04.jpg',             label:'Lavori — quadrata 2',    w:800, h:800},
+  {file:'lavoro-05.jpg',             label:'Lavori — quadrata 3',    w:800, h:800},
+];
+
+/* ── costruzione interfaccia ─────────────────────────── */
+const getVal = fd => fd.type==='rich'
+  ? fd.el.innerHTML.trim().replace(/&nbsp;/g,' ')
+  : fd.el.textContent.replace(/\s+/g,' ').trim();
+
+function render(){
+  const box = $('#groups'); box.innerHTML='';
+  fields = [];
+  for (const g of buildManifest(doc)){
+    const det = document.createElement('details'); det.className='group';
+    const cnt = document.createElement('span'); cnt.className='gcount';
+    det.innerHTML = '<summary></summary>';
+    det.querySelector('summary').append(g.title, cnt);
+    const body = document.createElement('div'); body.className='gbody';
+    for (const it of g.items){
+      const wrap = document.createElement('div'); wrap.className='field';
+      const lab = document.createElement('label');
+      const mod = document.createElement('span'); mod.className='mod';
+      lab.append(it.label+' ', mod);
+      const inp = document.createElement('textarea');
+      inp.rows = 1; inp.value = getVal(it);
+      inp.addEventListener('input', ()=>{ autosize(inp); refreshDirty(); });
+      const fd = {...it, input:inp, initial:inp.value, chipEl:mod, groupCnt:cnt};
+      fields.push(fd);
+      wrap.append(lab, inp);
+      if (it.hint){ const h=document.createElement('div'); h.className='hint'; h.innerHTML=it.hint; wrap.append(h); }
+      body.append(wrap);
+    }
+    det.append(body); box.append(det);
+    body.querySelectorAll('textarea').forEach(autosize);
+  }
+  renderImgs();
+  refreshDirty();
+}
+function autosize(t){ t.style.height='auto'; t.style.height=(t.scrollHeight+2)+'px'; }
+
+function renderImgs(){
+  const box = $('#imgs'); box.innerHTML=''; altFields=[];
+  for (const s of SLOTS){
+    const el = document.createElement('div'); el.className='slot'; el.dataset.file=s.file;
+    const img = doc.querySelector('img[src$="foto/'+s.file+'"]');
+    el.innerHTML =
+      '<div class="th"><img src="assets/img/foto/'+s.file+'?v='+Date.now()+'" alt="">'+
+      '<span class="tag">'+s.w+'×'+s.h+'</span></div>'+
+      '<div class="sb"><b>'+s.label+'</b>'+
+      '<div class="row"><button class="btn ghost pick">Cambia foto</button>'+
+      '<span class="meta">'+s.file+'</span></div></div>';
+    const sb = el.querySelector('.sb');
+    if (s.alt!==false && img){
+      const ai = document.createElement('input');
+      ai.type='text'; ai.placeholder='Descrizione per chi non vede la foto';
+      ai.value = img.getAttribute('alt')||'';
+      ai.addEventListener('input', refreshDirty);
+      altFields.push({el:img, input:ai, initial:ai.value});
+      sb.append(ai);
+    } else {
+      const n=document.createElement('span'); n.className='meta';
+      n.textContent='È solo decorativa: non serve descrizione.';
+      sb.append(n);
+    }
+    el.querySelector('.pick').addEventListener('click', ()=>pickImage(s, el));
+    box.append(el);
+  }
+}
+
+function pickImage(slot, card){
+  const inp = document.createElement('input');
+  inp.type='file'; inp.accept='image/*';
+  inp.onchange = async ()=>{
+    const file = inp.files[0]; if(!file) return;
+    try{
+      const bmp = await createImageBitmap(file, {imageOrientation:'from-image'})
+                        .catch(()=>fileToImage(file));
+      if (bmp.width < slot.w*0.75)
+        toast('Foto un po’ piccola: meglio almeno '+slot.w+'px di larghezza');
+      const cv = document.createElement('canvas'); cv.width=slot.w; cv.height=slot.h;
+      const sc = Math.max(slot.w/bmp.width, slot.h/bmp.height);
+      const cw = slot.w/sc, ch = slot.h/sc;
+      cv.getContext('2d').drawImage(bmp,(bmp.width-cw)/2,(bmp.height-ch)/2,cw,ch,0,0,slot.w,slot.h);
+      const blob = await new Promise(r=>cv.toBlob(r,'image/jpeg',.82));
+      const url = URL.createObjectURL(blob);
+      imgChanges[slot.file] = {blob, previewUrl:url};
+      card.querySelector('.th img').src = url;
+      card.classList.add('changed');
+      refreshDirty();
+      toast('Foto pronta — ricordati di salvare');
+    }catch(e){ toast('Non riesco a leggere questa immagine'); }
+  };
+  inp.click();
+}
+const fileToImage = f => new Promise((res,rej)=>{
+  const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=URL.createObjectURL(f); });
+
+/* ── stato modifiche ─────────────────────────────────── */
+function dirtyCount(){
+  let n=0;
+  for (const f of fields)    if (f.input.value.trim()!==f.initial) n++;
+  for (const a of altFields) if (a.input.value.trim()!==a.initial) n++;
+  n += Object.keys(imgChanges).length;
+  return n;
+}
+function refreshDirty(){
+  const per = new Map();
+  for (const f of fields){
+    const d = f.input.value.trim()!==f.initial;
+    f.chipEl.textContent = d?'· modificato':'';
+    per.set(f.groupCnt,(per.get(f.groupCnt)||0)+(d?1:0));
+  }
+  for (const [cnt,n] of per){ cnt.textContent = n?n+' da salvare':''; cnt.classList.toggle('on',!!n); }
+  const ni = Object.keys(imgChanges).length +
+             altFields.filter(a=>a.input.value.trim()!==a.initial).length;
+  $('#imgCount').textContent = ni? ni+' da salvare':''; $('#imgCount').classList.toggle('on',!!ni);
+  const n = dirtyCount();
+  $('#saveBtn').disabled = !n;
+  $('#saveBtn').textContent = n?'Salva le modifiche ('+n+')':'Salva le modifiche';
+  const chip = $('#chip');
+  chip.textContent = n?'modifiche non salvate':(loadedFromApi?'aggiornato ✓':'sola lettura');
+  chip.classList.toggle('dirty',!!n);
+}
+window.addEventListener('beforeunload', e=>{ if(dirtyCount()){ e.preventDefault(); e.returnValue=''; }});
+
+/* ── salvataggio: un commit sul branch test ──────────── */
+const b64 = async blob => {
+  const r = new FileReader();
+  return new Promise(res=>{ r.onload=()=>res(r.result.split(',')[1]); r.readAsDataURL(blob); });
+};
+const step = (id,cls)=>{ const li=$('#'+id); li.className=cls; };
+
+async function save(){
+  if (!token){ askToken(); return; }
+  const dlg = $('#saveDlg');
+  ['st1','st2','st3'].forEach(i=>step(i,''));
+  $('#saveOut').innerHTML=''; $('#dlgClose').hidden=true;
+  dlg.showModal();
+  try{
+    step('st1','doing');
+    // applica i campi al documento
+    let textChanged=false;
+    for (const f of fields){
+      const v=f.input.value.trim();
+      if (v===f.initial) continue;
+      if (f.type==='rich') f.el.innerHTML=v; else f.el.textContent=v;
+      textChanged=true;
+    }
+    for (const a of altFields){
+      const v=a.input.value.trim();
+      if (v===a.initial) continue;
+      a.el.setAttribute('alt',v); textChanged=true;
+    }
+    const files=[];
+    if (textChanged){
+      // il parser sposta dentro <body> i whitespace che seguono </html>:
+      // senza questa pulizia ogni salvataggio accumulerebbe una riga vuota
+      while (doc.body.lastChild && doc.body.lastChild.nodeType===3 &&
+             !doc.body.lastChild.textContent.trim())
+        doc.body.removeChild(doc.body.lastChild);
+      const html='<!DOCTYPE html>\n'+doc.documentElement.outerHTML+'\n';
+      files.push({path:'index.html', content:await b64(new Blob([html],{type:'text/html'}))});
+    }
+    for (const [name,c] of Object.entries(imgChanges))
+      files.push({path:'assets/img/foto/'+name, content:await b64(c.blob)});
+    if (!files.length) throw new Error('niente da salvare');
+    step('st1','done'); step('st2','doing');
+
+    // punto di partenza + avviso conflitti
+    const ref = await gh('/git/ref/heads/'+BRANCH);
+    if (ref.status===401||ref.status===403) throw new Error('chiave non valida o scaduta');
+    if (!ref.ok) throw new Error('errore di rete ('+ref.status+')');
+    const head = (await ref.json()).object.sha;
+    if (loadedFromApi && loadedSha && head!==loadedSha &&
+        !confirm('Qualcun altro ha salvato dopo che hai aperto questa pagina.\nSalvando ora, le sue modifiche ai testi potrebbero essere sovrascritte.\nContinuare?'))
+      throw new Error('salvataggio annullato');
+
+    const base = (await (await gh('/git/commits/'+head)).json()).tree.sha;
+    const tree = [];
+    for (const f of files){
+      const b = await gh('/git/blobs',{method:'POST',
+        body:JSON.stringify({content:f.content, encoding:'base64'})});
+      if (!b.ok) throw new Error('caricamento fallito ('+b.status+')');
+      tree.push({path:f.path, mode:'100644', type:'blob', sha:(await b.json()).sha});
+    }
+    const t = await gh('/git/trees',{method:'POST',
+      body:JSON.stringify({base_tree:base, tree})});
+    if (!t.ok) throw new Error('errore struttura ('+t.status+')');
+    step('st2','done'); step('st3','doing');
+
+    const msg = 'Contenuti aggiornati dall’area admin ('+
+      files.map(f=>f.path.split('/').pop()).join(', ')+')';
+    const c = await gh('/git/commits',{method:'POST',
+      body:JSON.stringify({message:msg, tree:(await t.json()).sha, parents:[head]})});
+    if (!c.ok) throw new Error('errore commit ('+c.status+')');
+    const newSha = (await c.json()).sha;
+    const u = await gh('/git/refs/heads/'+BRANCH,{method:'PATCH',
+      body:JSON.stringify({sha:newSha})});
+    if (!u.ok) throw new Error('errore aggiornamento ('+u.status+')');
+    step('st3','done');
+
+    // consolida lo stato locale
+    loadedSha = newSha; loadedFromApi = true;
+    for (const f of fields)    f.initial = f.input.value.trim();
+    for (const a of altFields) a.initial = a.input.value.trim();
+    imgChanges = {};
+    document.querySelectorAll('.slot.changed').forEach(s=>s.classList.remove('changed'));
+    refreshDirty();
+    $('#saveOut').innerHTML =
+      'Salvato ✓ — il sito di prova si aggiorna da solo in un minuto circa:<br>'+
+      '<a href="./" target="_blank" rel="noopener">apri il sito di prova</a> '+
+      '<span id="deployState" style="color:var(--txt3)"></span>';
+    pollDeploy(newSha);
+  }catch(e){
+    ['st1','st2','st3'].forEach(i=>{ if($('#'+i).className==='doing') step(i,'fail'); });
+    $('#saveOut').innerHTML = '<span style="color:var(--err)">'+e.message+'</span>'+
+      (String(e.message).includes('chiave')?'<br>Premi «Chiave di accesso» e verifica di averla incollata giusta.':'');
+  }
+  $('#dlgClose').hidden=false;
+}
+
+async function pollDeploy(sha){
+  const el = ()=>$('#deployState'); let tries=0;
+  const tick = async ()=>{
+    if (!el()) return;
+    try{
+      const r = await gh('/actions/runs?branch='+BRANCH+'&per_page=1');
+      if (!r.ok){ el().textContent=''; return; }   // il token può non vedere le Actions: pazienza
+      const run = (await r.json()).workflow_runs?.[0];
+      if (run && run.head_sha===sha){
+        if (run.status==='completed'){
+          el().textContent = run.conclusion==='success' ? '— online ✓'
+                                                        : '— problema nel deploy';
+          return;
+        }
+        el().textContent='— pubblicazione in corso…';
+      }
+    }catch(_){}
+    if (++tries<30) setTimeout(tick,6000);
+  };
+  setTimeout(tick,5000);
+}
+
+/* ── token ───────────────────────────────────────────── */
+function askToken(){
+  const t = prompt('Incolla la chiave di accesso (inizia con github_pat_…).\n'+
+                   'Lasciare vuoto per rimuoverla da questo browser.', token);
+  if (t===null) return;
+  token = t.trim();
+  if (token) localStorage.setItem('circle-admin-token', token);
+  else localStorage.removeItem('circle-admin-token');
+  boot();
+}
+
+/* ── avvio ───────────────────────────────────────────── */
+async function boot(){
+  $('#tokenBanner').hidden = !!token;
+  $('#loadErr').hidden = true;
+  try{
+    const html = await loadSource();
+    doc = new DOMParser().parseFromString(html,'text/html');
+    render();
+  }catch(e){
+    $('#loadErr').textContent = 'Non riesco a caricare i contenuti: '+e.message;
+    $('#loadErr').hidden = false;
+  }
+}
+$('#tokenBtn').addEventListener('click', askToken);
+$('#saveBtn').addEventListener('click', save);
+$('#dlgClose').addEventListener('click', ()=>$('#saveDlg').close());
+boot();
+</script>
+</body>
+</html>
