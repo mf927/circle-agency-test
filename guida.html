@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Come si usa l'area contenuti — Circle Agency</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  --bg:#07090a; --bg2:#0b0f11; --surf:#0f1519; --surf2:#131b20;
+  --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.17);
+  --txt:#eaf1f2; --txt2:#93a2a7; --txt3:#5d6d73;
+  --cy:#00bcc4; --cy2:#2ce6ee; --warn:#e0a83c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--txt);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--cy2)}
+header{
+  position:sticky;top:0;z-index:9;
+  display:flex;align-items:center;gap:14px;padding:12px 20px;
+  background:rgba(7,9,10,.93);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+header svg{width:26px;height:26px;color:var(--cy);flex:none}
+header h1{font-size:1rem;font-weight:600;letter-spacing:-.02em}
+header h1 small{display:block;font-size:.68rem;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase}
+.spacer{flex:1}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:9px 18px;
+  border-radius:100px;border:1px solid transparent;background:var(--cy);
+  color:#00191b;font-weight:600;font-size:.88rem;text-decoration:none;white-space:nowrap;
+}
+.btn:hover{background:var(--cy2)}
+main{max-width:720px;margin:0 auto;padding:34px 20px 90px}
+h2{
+  font-size:1.35rem;letter-spacing:-.028em;margin:38px 0 14px;
+  display:flex;align-items:baseline;gap:11px;
+}
+h2:first-of-type{margin-top:0}
+h2 span{font-size:.75rem;color:var(--cy);font-weight:600;letter-spacing:.1em}
+h3{font-size:1.02rem;margin:24px 0 8px;letter-spacing:-.02em}
+p{margin:12px 0;color:var(--txt2)}
+p strong,li strong{color:var(--txt)}
+ul,ol{margin:12px 0 12px 22px;color:var(--txt2)}
+li{margin:7px 0}
+code{background:var(--surf2);padding:2px 7px;border-radius:5px;font-size:.85em;color:var(--cy2)}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.92rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--txt3);font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;font-weight:600}
+td{color:var(--txt2)}
+.note{
+  border:1px solid var(--line2);border-left:3px solid var(--cy);
+  background:var(--surf);border-radius:10px;padding:15px 18px;margin:18px 0;
+  font-size:.94rem;color:var(--txt2);
+}
+.note.warn{border-left-color:var(--warn)}
+.note b{color:var(--txt)}
+.faq{border-top:1px solid var(--line);margin-top:8px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  cursor:pointer;padding:15px 30px 15px 0;position:relative;
+  font-weight:500;letter-spacing:-.015em;list-style:none;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:'';position:absolute;right:6px;top:50%;width:9px;height:9px;
+  translate:0 -60%;rotate:45deg;
+  border-right:1.5px solid var(--cy);border-bottom:1.5px solid var(--cy);
+  transition:.3s;
+}
+.faq details[open] summary::after{rotate:225deg;translate:0 -30%}
+.faq details[open] summary{color:var(--cy2)}
+.faq p{margin:0 0 16px;font-size:.94rem}
+</style>
+</head>
+<body>
+
+<header>
+  <svg viewBox="0 0 1186.29 1186.18" fill="currentColor" aria-hidden="true">
+    <path d="M 963.69 130.88 C 862.22 49.18 733.56 0 593.09 0 C 265.53 0 0 265.53 0 593.09 C 0 920.66 265.53 1186.18 593.09 1186.18 C 791.48 1186.18 966.65 1088.42 1074.36 938.86 L 899.04 938.86 C 817.48 1011.09 710.6 1055.33 593.09 1055.33 C 337.81 1055.33 130.88 848.38 130.88 593.12 C 130.88 337.86 337.84 130.91 593.09 130.91 Z"/>
+    <path d="M 726.12 150.71 C 790.6 170.24 849.23 203.33 898.52 246.83 L 1073.95 246.83 C 1048.57 211.68 1019.35 179.55 987.11 150.71 L 726.14 150.71 Z"/>
+    <path d="M 989.75 356.67 C 1031.13 425.91 1055.33 506.59 1055.33 593.09 C 1055.33 679.6 1031.22 759.87 990.03 829.02 L 1137.38 829.02 C 1168.8 756.71 1186.29 676.96 1186.29 593.09 C 1186.29 509.03 1168.66 429.12 1137.11 356.67 Z"/>
+  </svg>
+  <h1>Come si usa<small>Area contenuti Circle Agency</small></h1>
+  <div class="spacer"></div>
+  <a class="btn" href="admin.html">Vai all'area contenuti</a>
+</header>
+
+<main>
+
+<h2><span>01</span> Cosa ti serve</h2>
+<p>
+  Solo due cose: il link di questa area e una <strong>chiave di
+  accesso</strong>, una stringa lunga che inizia con <code>github_pat_…</code>
+  e che ti manda chi gestisce il sito. Senza chiave puoi guardare i
+  contenuti, ma non salvare.
+</p>
+<div class="note warn">
+  <b>La chiave è personale.</b> Non va pubblicata né inoltrata. Se pensi che
+  l'abbia vista qualcun altro, dillo subito: se ne genera un'altra in due
+  minuti e la vecchia smette di funzionare all'istante.
+</div>
+
+<h2><span>02</span> Primo accesso</h2>
+<ol>
+  <li>Apri <a href="admin.html">l'area contenuti</a>.</li>
+  <li>In alto a destra premi <strong>«Chiave di accesso»</strong>.</li>
+  <li>Incolla la chiave e conferma.</li>
+</ol>
+<p>
+  La chiave resta memorizzata su quel browser e su quel computer: le volte
+  successive entri e basta. Se cambi computer, la reinserisci.
+</p>
+
+<h2><span>03</span> Modificare i testi</h2>
+<p>
+  I contenuti sono divisi in sezioni — Prima schermata, Chi siamo, i nove
+  servizi, Metodo, FAQ, Contatti. Clicca su una sezione per aprirla: ogni
+  campo è un riquadro di testo, scrivi dentro e basta.
+</p>
+<p>
+  Accanto ai campi che hai toccato compare <strong>· modificato</strong>, e
+  sulla sezione il conteggio di quanti ne hai cambiati. Serve a non perdere
+  il filo quando ne apri tante.
+</p>
+
+<h3>I campi con del codice dentro</h3>
+<p>
+  In alcuni campi (i titoli grandi, i prezzi) vedrai scritte tipo
+  <code>&lt;em&gt;</code> o <code>&lt;br&gt;</code>. Non sono testo: sono
+  istruzioni di formattazione.
+</p>
+<table>
+  <tr><th>Se scrivi</th><th>Ottieni</th></tr>
+  <tr><td><code>&lt;em&gt;Tutto&lt;/em&gt; l'evento.</code></td><td>«Tutto» in corsivo ciano, il resto normale</td></tr>
+  <tr><td><code>Prima riga&lt;br&gt;Seconda riga</code></td><td>va a capo</td></tr>
+  <tr><td><code>da &lt;b&gt;250 €&lt;/b&gt;</code></td><td>il prezzo in grassetto grande</td></tr>
+</table>
+<p>
+  <strong>La regola:</strong> ogni <code>&lt;qualcosa&gt;</code> va chiuso
+  con <code>&lt;/qualcosa&gt;</code>. Se cancelli per sbaglio una di queste
+  scritte il testo resta leggibile, ma perde il colore o il grassetto. Nel
+  dubbio lascia stare e chiedi.
+</p>
+
+<h2><span>04</span> Cambiare le fotografie</h2>
+<p>
+  In fondo c'è la sezione <strong>Fotografie</strong> con i 17 riquadri del
+  sito, ognuno con l'indicazione di dove appare — <em>Card — DJ</em>,
+  <em>Lavori — larga 1</em> e così via.
+</p>
+<p>
+  Premi <strong>«Cambia foto»</strong>, scegli il file dal computer, e la
+  foto viene <strong>ritagliata e ridimensionata da sola</strong> alla
+  misura giusta: non devi preparare niente. Il ritaglio parte dal centro.
+</p>
+<p>
+  Sotto ogni foto c'è un campo per la <strong>descrizione</strong>: serve a
+  chi naviga con un lettore vocale e a Google. Scrivi cosa si vede — «DJ al
+  mixer durante una serata», non «foto 3».
+</p>
+<div class="note">
+  Se la foto è troppo piccola compare un avviso: verrà comunque usata, ma
+  potrebbe risultare sgranata. Meglio partire da file grandi.
+</div>
+
+<h2><span>05</span> Salvare</h2>
+<p>
+  Premi <strong>«Salva le modifiche»</strong> in alto a destra. Compare una
+  finestra con tre passaggi che si completano da soli. Poi il sito si
+  aggiorna <strong>da solo in circa un minuto</strong>, e la finestra ti
+  dice quando è online.
+</p>
+<div class="note">
+  <b>Stai lavorando sul sito di prova, non su circleagency.it.</b>
+  Puoi sbagliare senza paura: niente di quello che fai qui finisce sul sito
+  ufficiale finché non lo decide chi gestisce il sito.
+</div>
+
+<h2><span>06</span> Domande che vengono naturali</h2>
+<div class="faq">
+  <details>
+    <summary>Ho chiuso la pagina senza salvare, ho perso tutto?</summary>
+    <p>Sì, le modifiche non salvate si perdono. Il browser però ti avvisa
+       prima di chiudere se c'è qualcosa in sospeso.</p>
+  </details>
+  <details>
+    <summary>Posso rovinare il sito?</summary>
+    <p>Non in modo permanente. Ogni salvataggio viene registrato e si può
+       tornare a una versione precedente. Al massimo si perde qualche minuto.</p>
+  </details>
+  <details>
+    <summary>Ho premuto salva ma il sito non è cambiato.</summary>
+    <p>Aspetta un minuto e ricarica tenendo premuto <code>Shift</code>
+       (su Mac <code>Cmd+Shift+R</code>): a volte il browser mostra la
+       versione vecchia che ha in memoria.</p>
+  </details>
+  <details>
+    <summary>Compare «chiave non valida o scaduta».</summary>
+    <p>La chiave ha una data di scadenza. Chiedi che te ne generino una
+       nuova e reinseriscila con «Chiave di accesso».</p>
+  </details>
+  <details>
+    <summary>Stiamo lavorando in due sullo stesso testo.</summary>
+    <p>Se qualcun altro salva mentre tu hai la pagina aperta, al salvataggio
+       compare un avviso e puoi fermarti. Meglio comunque accordarsi prima
+       su chi tocca cosa.</p>
+  </details>
+  <details>
+    <summary>Voglio cambiare l'email o il numero di telefono.</summary>
+    <p>Puoi cambiare il testo che si legge, ma i <strong>link</strong> dei
+       pulsanti (cosa succede quando ci clicchi) sono un'altra cosa e vanno
+       aggiornati a parte. Segnalalo a chi gestisce il sito.</p>
+  </details>
+</div>
+
+</main>
+</body>
+</html>
